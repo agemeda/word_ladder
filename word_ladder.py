@@ -29,6 +29,32 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     the function returns `None`.
     '''
 
+    stack = [] #Create a stack
+    stack.append(start_word) #Push the start word onto the stack
+    que = deque() #Create a queue 
+    que.append(stack) #Enqueue the stack onto the queue
+    
+    if start_word == end_word:
+        return stack
+
+    with open(dictionary_file, 'r') as x:
+        dictionary_file = [word.strip() for word in x]
+
+    while len(que) != 0: #While the queue is not empty
+        newstack = que.popleft()
+        copy_dictionary = copy.copy(dictionary_file)
+
+        for word in copy_dictionary: #For each word in the dictionary
+            if _adjacent(word, newstack[-1]) is  True: #If the word is adjacent to the top of the stack
+                if word == end_word: #If this word is the end word
+                    ladder = newstack.append(word) #The front stack plus this word is your word ladder.
+                    return ladder  #you are done!
+                else:
+                    stack2 = copy.copy(newstack) #Make a copy of the stack
+                    stack2.append(word) #Push the found word onto the copy
+                    que.append(stack2) #Enqueue the copy
+                    dictionary_file.remove(word) #Delete word from the dictionary
+    return None
 
 def verify_word_ladder(ladder):
     '''
@@ -64,13 +90,11 @@ def _adjacent(word1, word2):
     '''
     if len(word1) != len(word2):
         return False
-
-    stop = False
-
-    for x, y in zip(word1, word2):
-        if x != y:
-            if stop:
-                return False
-            else:
-                stop = True
-    return stop
+    stop = 0
+    for i in  range(len(word)):
+        if word1[i] != word2[i]:
+            stop += 1
+    if stop > 1:
+        return False
+    else:
+        return True
