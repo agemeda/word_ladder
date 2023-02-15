@@ -49,8 +49,8 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
         for word in copy_dictionary:
             if _adjacent(word, newstack[-1]) is True:
                 if word == end_word:
-                    ladder = newstack.append(word)
-                    return ladder
+                    newstack.append(word)
+                    return newstack
                 else:
                     stack2 = copy.copy(newstack)
                     stack2.append(word)
@@ -71,16 +71,17 @@ def verify_word_ladder(ladder):
     False
     '''
 
-    x = True
+    blank = []
 
-    while x is True:
-        for i in ladder:
-            i = 0
-            if _adjacent(ladder[i], ladder[i+1]) is True:
-                i += 1
-            else:
-                x = False
-    return x
+    if len(ladder) == 0:
+        return False
+    else:
+        for i in range(len(ladder)-1):
+            blank += [_adjacent(ladder[i], ladder[i+1])]
+        if False in blank:
+            return False
+        else:
+            return True
 
 
 def _adjacent(word1, word2):
@@ -96,11 +97,13 @@ def _adjacent(word1, word2):
     '''
     if len(word1) != len(word2):
         return False
-    stop = 0
-    for i in range(len(word1)):
-        if word1[i] != word2[i]:
-            stop += 1
-    if stop > 1:
-        return False
+        stop = 0
+        for i in range(len(word1)):
+            if word1[i] != word2[i]:
+                stop += 1
+        if stop > 1:
+            return False
+        else:
+            return True
     else:
-        return True
+        return False
