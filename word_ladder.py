@@ -88,10 +88,11 @@ def _adjacent(word1, word2):
     >>> _adjacent('stone','money')
     False
     '''
+    
     if len(word1) != len(word2):
         return False
     stop = 0
-    for i in  range(len(word)):
+    for i in  range(len(word1)):
         if word1[i] != word2[i]:
             stop += 1
     if stop > 1:
